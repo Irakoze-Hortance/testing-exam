@@ -10,13 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
+import rw.ac.rca.termOneExam.domain.City;
 import rw.ac.rca.termOneExam.dto.CreateCityDTO;
+import rw.ac.rca.termOneExam.utils.APICustomResponse;
 
 import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
-@RequestMapping("/api/cities")
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CityControllerIntegrationTest {
 
@@ -32,14 +33,13 @@ public class CityControllerIntegrationTest {
 
     @Test
     public void findById_testSuccess() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/id/101", String.class);
-
+        ResponseEntity<String> response = restTemplate.getForEntity("api/cities/id/101", String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void findById_testNotFound() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/106", String.class);
+        ResponseEntity<APICustomResponse> response = restTemplate.getForEntity("api/cities/id/106", APICustomResponse.class);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -62,7 +62,9 @@ public class CityControllerIntegrationTest {
     @Test
     public void create_testSuccess() {
         CreateCityDTO city = new CreateCityDTO();
-        ResponseEntity<CreateCityDTO> response = restTemplate.postForEntity("/add", city, CreateCityDTO.class);
+        city.setName("Dodoma");
+        city.setWeather(29);
+        ResponseEntity<City> response = restTemplate.postForEntity("api/cities/add", city, City.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals("Dodoma", Objects.requireNonNull(response.getBody()));
@@ -77,7 +79,7 @@ public class CityControllerIntegrationTest {
         assertEquals("City already exists", response.getBody());
     }
 
-
+   
 
 
     @Test

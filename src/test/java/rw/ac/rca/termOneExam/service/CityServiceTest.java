@@ -24,10 +24,10 @@ public class CityServiceTest {
 
     @Test
     public void getAll() {
-        when(cityRepo.findAll()).thenReturn(Arrays.asList( new City( "Kigali", 24),
-                new City("Musanze",34)));
+        when(cityRepo.findAll()).thenReturn(Arrays.asList( new City(101, "Kigali", 24,75.2),
+                new City(102,"Musanze",14,64.4)));
 
-        assertEquals("Kigali", cityService.getAll().get(0).getName());
+        assertEquals("Kigali", cityService.getAll().get(1).getName());
     }
     @Test
     public void findById(){
